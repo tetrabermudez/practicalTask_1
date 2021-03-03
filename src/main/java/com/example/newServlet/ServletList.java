@@ -1,7 +1,6 @@
 package com.example.newServlet;
 
 import com.example.newServlet.logic.Model;
-import com.example.newServlet.logic.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -12,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet(urlPatterns = "/get")
@@ -19,6 +19,9 @@ public class ServletList extends HttpServlet {
 
     Model model = Model.getInstance();
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    Map<String, String> errorMessage = new HashMap<String, String>(1) {{
+        put("ERROR", "You passed wrong id!!!");
+    }};
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         JsonObject jsonObject = JsonUtil.requestToJson(request, gson);
@@ -26,12 +29,17 @@ public class ServletList extends HttpServlet {
 
         int id = jsonObject.get("id").getAsInt();
 
-
         response.setContentType("application/json;charset=utf-8");
         PrintWriter pw = response.getWriter();
-        pw.print(gson.toJson(model.getUserById(id)));
 
+        if (id == 0) {
+            pw.print(gson.toJson(model.getFromList()));
+        } else if (id > 0 && id < model.getFromList().size()) {
+            pw.print(gson.toJson(model.getUserById(id)));
+        } 
     }
+
+
         /*response.setContentType("text/html;charset=utf-8");
         PrintWriter pw = response.getWriter();
 
