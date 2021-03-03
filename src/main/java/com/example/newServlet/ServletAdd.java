@@ -52,7 +52,7 @@ public class ServletAdd extends HttpServlet {
         response.setContentType("application/json;charset=utf-8");
 
         PrintWriter pw = response.getWriter();
-        pw.print(gson.toJson(model.getFromList()));
+            pw.print(gson.toJson(model.getFromList()));
     }
 
     /*protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
