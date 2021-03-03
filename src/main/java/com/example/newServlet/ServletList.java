@@ -2,6 +2,9 @@ package com.example.newServlet;
 
 import com.example.newServlet.logic.Model;
 import com.example.newServlet.logic.User;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,9 +18,21 @@ import java.util.Map;
 public class ServletList extends HttpServlet {
 
     Model model = Model.getInstance();
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html;charset=utf-8");
+        JsonObject jsonObject = JsonUtil.requestToJson(request, gson);
+        request.setCharacterEncoding("UTF-8");
+
+        int id = jsonObject.get("id").getAsInt();
+
+
+        response.setContentType("application/json;charset=utf-8");
+        PrintWriter pw = response.getWriter();
+        pw.print(gson.toJson(model.getUserById(id)));
+
+    }
+        /*response.setContentType("text/html;charset=utf-8");
         PrintWriter pw = response.getWriter();
 
         int id = Integer.parseInt(request.getParameter("id"));
@@ -64,5 +79,5 @@ public class ServletList extends HttpServlet {
                     "<a href=\"index.jsp\">Домой</a>" +
                     "</html");
         }
-    }
+    }*/
 }

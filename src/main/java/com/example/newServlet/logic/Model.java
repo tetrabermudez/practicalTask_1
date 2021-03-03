@@ -23,12 +23,20 @@ public class Model implements Serializable {
         model.put(4, new User("Fain", "Duban", 11111));
     }
 
+    public User getUserById(int id) {
+        return model.get(id);
+    }
+
     public void add(User user, int id) {
         model.put(id, user);
     }
 
     public void delete(int id) {
         model.remove(id);
+    }
+
+    public void update(int id, User user) {
+        model.replace(id, user);
     }
 
     public Map<Integer, User> getFromList() {
